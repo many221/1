@@ -1,6 +1,6 @@
 package com.company.utilites;
 
-public abstract class random_num {
+public abstract class Random_num {
 
     public static int num(int min, int max){
 

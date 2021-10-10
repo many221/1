@@ -1,10 +1,10 @@
 package com.company.deck;
 
 import com.company.cards.Card;
-import com.company.utilites.random_num;
+import com.company.players.Hand;
+import com.company.utilites.Random_num;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Standard_Deck implements Deck{
 
@@ -76,22 +76,26 @@ public class Standard_Deck implements Deck{
     }
 
 
-    public Card DrawRandom(){
-
-        int index = random_num.num (0, first_deck.size ()-1);
-
-        Card card = first_deck.get ( index );
-        first_deck.remove ( index );
-        //Testing Deck card swapping
+//    public Card DrawRandom(){
 //
-//        second_deck.add (card);
-//        System.out.println (first_deck.size () + " 1|2 " + second_deck.size ());
-        return card;
-
-    }
+//        int index = random_num.num (0, first_deck.size ()-1);
+//
+//        Card card = first_deck.get ( index );
+//        first_deck.remove ( index );
+//        //Testing Deck card swapping
+////
+////        second_deck.add (card);
+////        System.out.println (first_deck.size () + " 1|2 " + second_deck.size ());
+//        return card;
+//
+//    }
 
     public void addToSecondDeck(Card card){
         second_deck.add ( card );
+    }
+
+    public Card showPlayedCard(){
+        return second_deck.get ( 0 );
     }
 
     public Card draw(int num) {
@@ -101,6 +105,16 @@ public class Standard_Deck implements Deck{
 
     @Override
     public Card draw() {
-        return null;
+        int index = Random_num.num (0, first_deck.size ()-1);
+        Card card = first_deck.get ( index );
+        first_deck.remove ( index );
+        return card;
+    }
+
+    @Override
+    public void deal(Hand hand, int num) {
+        for (int i = 0; i < num; i++) {
+            hand.addCard ( draw () );
+        }
     }
 }

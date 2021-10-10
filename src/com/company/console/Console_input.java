@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
-public  abstract class console_input {
+public  abstract class Console_input {
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -39,7 +39,7 @@ public  abstract class console_input {
 
     protected static boolean yesNO(String yn ){
 
-        boolean answer;
+        boolean answer = false;
        do {
            switch (yn) {
                case "Y", "y", "Yes", "yes" -> {

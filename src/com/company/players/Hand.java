@@ -10,8 +10,9 @@ public class Hand {
 
     private final Player player;
 
-    public Hand (Player player){
-        this.player = player;
+    public Hand (String playerName){
+        Player playee = new Player (playerName);
+        player = playee;
     }
 
     public void addCard(Card card){
