@@ -7,4 +7,8 @@ public class Player implements Actors{
     public Player(String name) {
         Name = name;
     }
+
+    public String getName() {
+        return Name;
+    }
 }

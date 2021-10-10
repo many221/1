@@ -8,7 +8,7 @@ public class Hand {
 
     private ArrayList<Card> cards = new ArrayList<> ();
 
-    private final Actors player;
+    private final Player player;
 
     public Hand (Player player){
         this.player = player;
@@ -22,9 +22,11 @@ public class Hand {
 //        String output = cards.toString ();
 //        System.out.println (output);
         //For testing
+        String cardsInHand = "";
         for (int i = 0; i < cards.size () ; i++) {
-            System.out.println ("Index " + i + ": " + cards.get ( i ));
+           cardsInHand += "{" + (i + 1) + ". " + cards.get ( i )+"} ";
         }
+        System.out.println (cardsInHand);
     }
 
    public Card playCard(int index){
@@ -33,7 +35,12 @@ public class Hand {
         return card;
    }
 
-    public void getHandSize(){
-        System.out.println (cards.size ());
-    }
+   public String getPlayerName(){
+        return player.getName ();
+   }
+
+   public int getHandSize(){
+       // System.out.println (cards.size ());
+       return cards.size ();
+   }
 }

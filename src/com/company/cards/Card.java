@@ -20,8 +20,8 @@ public class Card {
         String output = "";
 
         switch (CARD_VALUE){
-            case 10 ->{output = "Skip 🚫";}
-            case 11 ->{output = "Reverse 🔃";}
+            case 10 ->{output = "🚫";}
+            case 11 ->{output = "🔃";}
             case 12 ->{output = "+2";}
             case 13 ->{output = "WILD 🔠";}
             case 14 ->{output = "+4";}
