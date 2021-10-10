@@ -36,24 +36,25 @@ public  abstract class Console_input {
         } while (true);
         return input;
     }
+    //O}----fix loop
+    protected static boolean yesNO(String yn){
 
-    protected static boolean yesNO(String yn ){
-
-        boolean answer = false;
-       do {
+        while(true) {
            switch (yn) {
                case "Y", "y", "Yes", "yes" -> {
-                 answer = true;
+               return true;
+
                }
                case "N", "n", "No", "no" -> {
-                  answer = false;
+              return false;
                }
                default -> {
                    out.println ( "Please Enter Yes or No" );
+
                    continue;
                }
            }
-       }while(true);
+       }
     }
     
 

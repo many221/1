@@ -52,6 +52,7 @@ public class Standard_Deck implements Deck{
 
             }
         }
+
     }
 
 
@@ -94,8 +95,13 @@ public class Standard_Deck implements Deck{
         second_deck.add ( card );
     }
 
+    public void intialPLayCard(){
+        addToSecondDeck ( draw () );
+    }
+
     public Card showPlayedCard(){
-        return second_deck.get ( 0 );
+        int deckSize = second_deck.size () - 1;
+        return second_deck.get ( deckSize );
     }
 
     public Card draw(int num) {

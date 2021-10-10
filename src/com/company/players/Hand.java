@@ -44,4 +44,8 @@ public class Hand {
        // System.out.println (cards.size ());
        return cards.size ();
    }
+
+   public boolean isEmpty(){
+        return cards.isEmpty ();
+   }
 }

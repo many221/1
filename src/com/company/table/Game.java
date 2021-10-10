@@ -9,35 +9,41 @@ import java.util.ArrayList;
 public class Game {
 
     private ArrayList<Hand> hands = new ArrayList<> ();
-    private  Standard_Deck deck = new Standard_Deck ();
+    private Standard_Deck deck = new Standard_Deck ();
     private int intialCardCount = 7;
+    private Hand winner;
 
     public Game(){
 
-        Console_output.welcome_msg ();
-            int playing = Console_output.playing ();
-
-            for (int i = 0; i < playing; i++) {
-                Hand hand = new Hand ( Console_output.playerNames () );
-                hands.add ( hand );
-            }
-
-
-
+       if ( Console_output.welcome_msg ()) {
+           int playing = Console_output.playing ();
+           for (int i = 0; i < playing; i++) {
+               Hand hand = new Hand ( Console_output.playerNames () );
+               hands.add ( hand );
+           }
+       }else {
+           System.out.println ("Bye Bye!");
+           System.exit ( 0 );
+       }
 
     }
 
     public void start(){
         dealCards ();
-        turns ();
+        while (true){
+            turns ();
+            emptyHandCheck ();
+        }
+
 
     }
-
+    //O}---Set initial card to only normal
     private void dealCards(){
         Console_output.dealingMsg ( intialCardCount );
         for (Hand hand : hands) {
             deck.deal ( hand, intialCardCount );
         }
+        deck.intialPLayCard ();
     }
 
     private void turns(){
@@ -48,11 +54,14 @@ public class Game {
     }
 
     private void turnActions(Hand activeHand){
+        playDeck ();
+        System.out.println (activeHand.getPlayerName () + "'s Turn");
+        System.out.print ("Cards in Hand: ");
         activeHand.showCards ();
-        int num = Console_output.getAction ( activeHand );
+        int num = Console_output.getAction ();
         switch (num){
             case 1 -> {
-                int num2 = Console_output.getPlayCard ( activeHand );
+                int num2 = Console_output.getPlayCard ( activeHand ) - 1;
                deck.addToSecondDeck ( activeHand.playCard ( num2 ) );
             }
             case 2 -> activeHand.addCard ( deck.draw () );
@@ -60,4 +69,19 @@ public class Game {
 
     }
 
+    private void playDeck(){
+        System.out.println ("Played Card: {"+ deck.showPlayedCard ()+ "}");
+    }
+
+
+    private void emptyHandCheck(){
+        for (Hand hand: hands) {
+            if(hand.isEmpty ()){
+                winner = hand;
+                System.out.println (winner.getPlayerName () + " Has Won");
+                System.exit ( 0 );
+            }
+        }
+
+    }
 }
