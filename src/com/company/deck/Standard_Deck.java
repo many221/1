@@ -55,11 +55,23 @@ public class Standard_Deck implements Deck{
     }
 
 
-    public void displayDeck(){
+    public void displayDeck(int deck){
 
-        String output = first_deck.toString ();
+        String output = "";
+        int size = 0;
 
-        System.out.println (output + "\n" + first_deck.size ());
+            switch (deck){
+                case 1 -> {
+                   // output = first_deck.toString ();
+                    size = first_deck.size ();
+                }
+                case 2 -> {
+                    output = second_deck.toString ();
+                    size = second_deck.size ();
+
+                }
+            }
+        System.out.println (output + "\n" + size);
 
     }
 
@@ -69,15 +81,18 @@ public class Standard_Deck implements Deck{
         int index = random_num.num (0, first_deck.size ()-1);
 
         Card card = first_deck.get ( index );
-
+        first_deck.remove ( index );
         //Testing Deck card swapping
-//        first_deck.remove ( index );
+//
 //        second_deck.add (card);
 //        System.out.println (first_deck.size () + " 1|2 " + second_deck.size ());
         return card;
 
     }
 
+    public void addToSecondDeck(Card card){
+        second_deck.add ( card );
+    }
 
     public Card draw(int num) {
         return first_deck.get ( num );
