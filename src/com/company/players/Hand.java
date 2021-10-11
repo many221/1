@@ -20,9 +20,6 @@ public class Hand {
     }
 
     public void showCards(){
-//        String output = cards.toString ();
-//        System.out.println (output);
-        //For testing
         String cardsInHand = "";
         for (int i = 0; i < cards.size () ; i++) {
            cardsInHand += "{" + (i + 1) + ". " + cards.get ( i )+"} ";
@@ -41,7 +38,6 @@ public class Hand {
    }
 
    public int getHandSize(){
-       // System.out.println (cards.size ());
        return cards.size ();
    }
 

@@ -1,5 +1,7 @@
 package com.company.table;
 
+
+import com.company.cards.Card;
 import com.company.console.Console_output;
 import com.company.deck.Standard_Deck;
 import com.company.players.Hand;
@@ -44,6 +46,8 @@ public class Game {
             deck.deal ( hand, intialCardCount );
         }
         deck.intialPLayCard ();
+        deck.removeFromDrawDeck ( deck.showPlayedCard () );
+       // System.out.println (deck.showPlayedCard ());
     }
 
     private void turns(){
@@ -83,5 +87,13 @@ public class Game {
             }
         }
 
+    }
+
+    private void isPlayableCheck(Card card){
+        boolean colorCheck = card.CARD_COLOR.matches ( deck.showPlayedCard ().CARD_COLOR );
+        boolean numCheck = card.CARD_VALUE == deck.showPlayedCard ().CARD_VALUE;
+        if(numCheck || colorCheck){
+
+        }
     }
 }

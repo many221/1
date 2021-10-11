@@ -95,9 +95,6 @@ public class Standard_Deck implements Deck{
         second_deck.add ( card );
     }
 
-    public void intialPLayCard(){
-        addToSecondDeck ( draw () );
-    }
 
     public Card showPlayedCard(){
         int deckSize = second_deck.size () - 1;
@@ -113,8 +110,12 @@ public class Standard_Deck implements Deck{
     public Card draw() {
         int index = Random_num.num (0, first_deck.size ()-1);
         Card card = first_deck.get ( index );
-        first_deck.remove ( index );
+     //   first_deck.remove ( index );
         return card;
+    }
+
+    public void removeFromDrawDeck(Card card){
+        first_deck.remove ( card );
     }
 
     @Override
@@ -123,4 +124,17 @@ public class Standard_Deck implements Deck{
             hand.addCard ( draw () );
         }
     }
-}
+//X Sometimes doesnt work
+    public void intialPLayCard(){
+        Card card = draw ();
+        int num = card.CARD_VALUE;
+        while (num > 9){
+            card = draw ();
+            }
+        addToSecondDeck ( card );
+        }
+
+        }
+
+
+
