@@ -29,9 +29,13 @@ public class Hand {
 
    public Card playCard(int index){
         Card card = cards.get (index);
-        cards.remove ( index );
         return card;
    }
+
+   public void removeCard(int index){
+        cards.remove ( index );
+   }
+
 
    public String getPlayerName(){
         return player.getName ();

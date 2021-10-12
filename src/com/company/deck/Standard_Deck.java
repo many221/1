@@ -67,12 +67,12 @@ public class Standard_Deck implements Deck{
                     size = first_deck.size ();
                 }
                 case 2 -> {
-                    output = second_deck.toString ();
+                   // output = second_deck.toString ();
                     size = second_deck.size ();
 
                 }
             }
-        System.out.println (output + "\n" + size);
+        System.out.println ( "Deck " + deck + ": "+ size);
 
     }
 
@@ -121,19 +121,16 @@ public class Standard_Deck implements Deck{
     @Override
     public void deal(Hand hand, int num) {
         for (int i = 0; i < num; i++) {
-            hand.addCard ( draw () );
+            Card card = draw ();
+            hand.addCard ( card );
+            removeFromDrawDeck ( card );
         }
     }
 //X Sometimes doesnt work
-    public void intialPLayCard(){
+    public void intialPLayCard() {
         Card card = draw ();
-        int num = card.CARD_VALUE;
-        while (num > 9){
-            card = draw ();
-            }
         addToSecondDeck ( card );
-        }
-
+    }
         }
 
 

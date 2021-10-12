@@ -35,6 +35,12 @@ public class Game {
         while (true){
             turns ();
             emptyHandCheck ();
+            System.out.println ("-".repeat ( 20 ));
+            System.out.println ("-".repeat ( 20 ));
+            deck.displayDeck ( 1 );
+            deck.displayDeck ( 2 );
+            System.out.println ("-".repeat ( 20 ));
+            System.out.println ("-".repeat ( 20 ));
         }
 
 
@@ -52,10 +58,13 @@ public class Game {
 
     private void turns(){
         for (Hand hand : hands) {
+            System.out.println ("-".repeat ( 20 ));
             turnActions ( hand );
+            System.out.println ("-".repeat ( 20 ));
         }
 
     }
+
 
     private void turnActions(Hand activeHand){
         playDeck ();
@@ -65,8 +74,23 @@ public class Game {
         int num = Console_output.getAction ();
         switch (num){
             case 1 -> {
-                int num2 = Console_output.getPlayCard ( activeHand ) - 1;
-               deck.addToSecondDeck ( activeHand.playCard ( num2 ) );
+
+                while(true) {
+                    int indexOfCard = Console_output.getPlayCard ( activeHand ) - 1;
+                    Card choosenCard = activeHand.playCard ( indexOfCard );
+                    if (isPlayableCheck ( choosenCard )) {
+                    deck.addToSecondDeck ( choosenCard );
+                    activeHand.removeCard ( indexOfCard );
+                    break;
+                    }
+                    System.out.print ("Played Card: " +  deck.showPlayedCard ());
+
+                    System.out.println ();
+                    System.out.print ("Please Choose A Valid Card");
+                    activeHand.showCards ();
+                    //O}---Figure Out Exit
+
+                }
             }
             case 2 -> activeHand.addCard ( deck.draw () );
         }
@@ -89,11 +113,15 @@ public class Game {
 
     }
 
-    private void isPlayableCheck(Card card){
-        boolean colorCheck = card.CARD_COLOR.matches ( deck.showPlayedCard ().CARD_COLOR );
-        boolean numCheck = card.CARD_VALUE == deck.showPlayedCard ().CARD_VALUE;
-        if(numCheck || colorCheck){
+    public boolean isPlayableCheck(Card attemptCard){
+        Card baseCard = deck.showPlayedCard ();
+        boolean colorMatch = baseCard.CARD_COLOR.matches ( attemptCard.CARD_COLOR );
+        boolean valueMatch = baseCard.CARD_VALUE == attemptCard.CARD_VALUE;
+        boolean blackCardHandCheck = attemptCard.CARD_VALUE > 12;
+        //O}---Temp Till Hand Sets Color
+        boolean blackCardDeckCheck = baseCard.CARD_VALUE >12;
 
-        }
+
+        return colorMatch || valueMatch || blackCardHandCheck||blackCardDeckCheck;
     }
 }
