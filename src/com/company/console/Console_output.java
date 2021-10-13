@@ -32,6 +32,6 @@ public abstract class Console_output {
 
     public static int getPlayCard(Hand activehand){
         int handSize = activehand.getHandSize ();
-        return Console_input.getInt ( "Please Enter A Card Number: ", 1,handSize,"Please Enter A Number 1-" + handSize  );
+        return Console_input.getInt ( "Please Enter A Card Number: ", 0,handSize,"Please Enter A Number 1-" + handSize  );
     }
 }

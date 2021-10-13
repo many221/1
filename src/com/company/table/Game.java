@@ -68,6 +68,7 @@ public class Game {
 
     private void turnActions(Hand activeHand){
         playDeck ();
+
         System.out.println (activeHand.getPlayerName () + "'s Turn");
         System.out.print ("Cards in Hand: ");
         activeHand.showCards ();
@@ -76,23 +77,33 @@ public class Game {
             case 1 -> {
 
                 while(true) {
-                    int indexOfCard = Console_output.getPlayCard ( activeHand ) - 1;
-                    Card choosenCard = activeHand.playCard ( indexOfCard );
+                    int indexOfCard = Console_output.getPlayCard ( activeHand ) ;
+                    if(indexOfCard == 0){
+                        turnActions ( activeHand );
+                        break;
+                    }
+                    int num2 = indexOfCard-1;
+                    Card choosenCard = activeHand.playCard ( num2);
                     if (isPlayableCheck ( choosenCard )) {
                     deck.addToSecondDeck ( choosenCard );
-                    activeHand.removeCard ( indexOfCard );
+                    activeHand.removeCard ( num2 );
                     break;
                     }
                     System.out.print ("Played Card: " +  deck.showPlayedCard ());
-
                     System.out.println ();
                     System.out.print ("Please Choose A Valid Card");
                     activeHand.showCards ();
-                    //O}---Figure Out Exit
+
+
 
                 }
             }
-            case 2 -> activeHand.addCard ( deck.draw () );
+            //O}---Play after draw
+            case 2 -> {
+                Card card = deck.draw ();
+                activeHand.addCard ( card );
+                deck.removeFromDrawDeck ( card );
+            }
         }
 
     }
@@ -120,8 +131,8 @@ public class Game {
         boolean blackCardHandCheck = attemptCard.CARD_VALUE > 12;
         //O}---Temp Till Hand Sets Color
         boolean blackCardDeckCheck = baseCard.CARD_VALUE >12;
-
-
         return colorMatch || valueMatch || blackCardHandCheck||blackCardDeckCheck;
     }
+
+    //Check Deck Size
 }
