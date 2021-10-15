@@ -5,46 +5,45 @@ import com.company.players.Hand;
 import com.company.utilites.Random_num;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Standard_Deck implements Deck{
 
 
-    private final String[] COLORS = {"🟥","🟦","🟩","🟨","⬛️"};
+    private final ArrayList<Card> drawDeck = new ArrayList<> ();
 
-    private final int[] VALUES = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
-
-    private ArrayList<Card> first_deck = new ArrayList<> ();
-
-    private ArrayList<Card> second_deck = new ArrayList<> ();
+    private final ArrayList<Card> discardDeck = new ArrayList<> ();
 
 
     public Standard_Deck(){
 
-        for (String color:COLORS) {
+        String[] COLORS = {"🟥", "🟦", "🟩", "🟨", "⬛️"};
+        for (String color: COLORS) {
 
             boolean isBlack = color.equals ( "⬛️" );
 
-            for (int num:VALUES) {
+            int[] VALUES = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+            for (int num: VALUES) {
 
                 switch (num){
                     case 0 ->{
                         if (!isBlack){
                         Card card = new Card ( num, color );
-                        first_deck.add ( card );
+                        drawDeck.add ( card );
                         }
                     }
                     case 13,14 ->{
                         if (isBlack)
                         for (int i = 0; i < 4; i++) {
                             Card card = new Card ( num, color );
-                            first_deck.add ( card );
+                            drawDeck.add ( card );
                         }
                     }
                     default -> {
                         if (!isBlack)
                         for (int i = 0; i < 2; i++) {
                             Card card = new Card ( num, color );
-                            first_deck.add ( card );
+                            drawDeck.add ( card );
                         }
                     }
 
@@ -58,64 +57,47 @@ public class Standard_Deck implements Deck{
 
     public void displayDeck(int deck){
 
-        String output = "";
+        String deckName = "";
+
+        int size = deckSize ( deck );
+
+        switch (deck){
+            case 1 -> deckName = "Draw Deck";
+            case 2 -> deckName = "Discard Deck";
+        }
+
+        System.out.println ( "Deck " + deckName + ": "+ size);
+
+    }
+
+    private int deckSize(int deck){
         int size = 0;
 
-            switch (deck){
-                case 1 -> {
-                   // output = first_deck.toString ();
-                    size = first_deck.size ();
-                }
-                case 2 -> {
-                   // output = second_deck.toString ();
-                    size = second_deck.size ();
+        switch (deck){
+            case 1 -> size = drawDeck.size ();
+            case 2 -> size = discardDeck.size ();
 
-                }
-            }
-        System.out.println ( "Deck " + deck + ": "+ size);
-
+        }
+        return size;
     }
 
-
-//    public Card DrawRandom(){
-//
-//        int index = random_num.num (0, first_deck.size ()-1);
-//
-//        Card card = first_deck.get ( index );
-//        first_deck.remove ( index );
-//        //Testing Deck card swapping
-////
-////        second_deck.add (card);
-////        System.out.println (first_deck.size () + " 1|2 " + second_deck.size ());
-//        return card;
-//
-//    }
-
-    public void addToSecondDeck(Card card){
-        second_deck.add ( card );
-    }
-
-
-    public Card showPlayedCard(){
-        int deckSize = second_deck.size () - 1;
-        return second_deck.get ( deckSize );
-    }
-
-    public Card draw(int num) {
-        return first_deck.get ( num );
-    }
-
-
-    @Override
-    public Card draw() {
-        int index = Random_num.num (0, first_deck.size ()-1);
-        Card card = first_deck.get ( index );
-     //   first_deck.remove ( index );
-        return card;
+    public void addToDiscardDeck(Card card){
+        discardDeck.add ( card );
     }
 
     public void removeFromDrawDeck(Card card){
-        first_deck.remove ( card );
+        drawDeck.remove ( card );
+    }
+
+    public void shuffle(){
+        Collections.shuffle ( drawDeck );
+    }
+
+    @Override
+    public Card draw() {
+        deckCheck ();
+        Card card = drawDeck.get ( drawDeck.size () - 1 );
+        return card;
     }
 
     @Override
@@ -126,11 +108,19 @@ public class Standard_Deck implements Deck{
             removeFromDrawDeck ( card );
         }
     }
-//X Sometimes doesnt work
-    public void intialPLayCard() {
-        Card card = draw ();
-        addToSecondDeck ( card );
+
+
+    public void deckCheck(){
+        if(deckSize ( 1 ) == 1){
+            //Collections.copy ( drawDeck,discardDeck );
+         drawDeck.addAll ( discardDeck);
+         discardDeck.clear ();
+         shuffle ();
+
+        }
     }
+
+
         }
 
 

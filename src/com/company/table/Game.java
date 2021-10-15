@@ -14,6 +14,7 @@ public class Game {
     private Standard_Deck deck = new Standard_Deck ();
     private int intialCardCount = 7;
     private Hand winner;
+    private Card playedCard;
 
     public Game(){
 
@@ -31,6 +32,7 @@ public class Game {
     }
 
     public void start(){
+        deck.shuffle ();
         dealCards ();
         while (true){
             turns ();
@@ -51,8 +53,7 @@ public class Game {
         for (Hand hand : hands) {
             deck.deal ( hand, intialCardCount );
         }
-        deck.intialPLayCard ();
-        deck.removeFromDrawDeck ( deck.showPlayedCard () );
+        firstCard ();
        // System.out.println (deck.showPlayedCard ());
     }
 
@@ -68,30 +69,34 @@ public class Game {
 
     private void turnActions(Hand activeHand){
         playDeck ();
-
         System.out.println (activeHand.getPlayerName () + "'s Turn");
         System.out.print ("Cards in Hand: ");
         activeHand.showCards ();
-        int num = Console_output.getAction ();
-        switch (num){
+        int action = Console_output.getAction ();
+        switch (action){
             case 1 -> {
 
                 while(true) {
-                    int indexOfCard = Console_output.getPlayCard ( activeHand ) ;
-                    if(indexOfCard == 0){
+
+                    int card = Console_output.getPlayCard ( activeHand );
+
+                    if(card == 0){
                         turnActions ( activeHand );
                         break;
                     }
-                    int num2 = indexOfCard-1;
-                    Card choosenCard = activeHand.playCard ( num2);
+
+                    int indexOfCard = card-1;
+
+                    Card choosenCard = activeHand.playCard ( indexOfCard);
+
                     if (isPlayableCheck ( choosenCard )) {
-                    deck.addToSecondDeck ( choosenCard );
-                    activeHand.removeCard ( num2 );
-                    break;
+                        playCard ( choosenCard,activeHand );
+                        break;
                     }
-                    System.out.print ("Played Card: " +  deck.showPlayedCard ());
+
+                    System.out.print ("Played Card: " +  playedCard );
                     System.out.println ();
-                    System.out.print ("Please Choose A Valid Card");
+                    System.out.print ("Please Choose A Valid Card Or Enter 0 to go back");
                     activeHand.showCards ();
 
 
@@ -99,17 +104,13 @@ public class Game {
                 }
             }
             //O}---Play after draw
-            case 2 -> {
-                Card card = deck.draw ();
-                activeHand.addCard ( card );
-                deck.removeFromDrawDeck ( card );
-            }
+            case 2 -> draw ( activeHand );
         }
 
     }
 
     private void playDeck(){
-        System.out.println ("Played Card: {"+ deck.showPlayedCard ()+ "}");
+        System.out.println ("Played Card: {"+ playedCard + "}");
     }
 
 
@@ -124,15 +125,105 @@ public class Game {
 
     }
 
-    public boolean isPlayableCheck(Card attemptCard){
-        Card baseCard = deck.showPlayedCard ();
-        boolean colorMatch = baseCard.CARD_COLOR.matches ( attemptCard.CARD_COLOR );
-        boolean valueMatch = baseCard.CARD_VALUE == attemptCard.CARD_VALUE;
+    private boolean isPlayableCheck(Card attemptCard){
+
+        boolean colorMatch = playedCard.CARD_COLOR.matches ( attemptCard.CARD_COLOR );
+        boolean valueMatch = playedCard.CARD_VALUE == attemptCard.CARD_VALUE;
         boolean blackCardHandCheck = attemptCard.CARD_VALUE > 12;
         //O}---Temp Till Hand Sets Color
-        boolean blackCardDeckCheck = baseCard.CARD_VALUE >12;
+        boolean blackCardDeckCheck = playedCard.CARD_VALUE >12;
         return colorMatch || valueMatch || blackCardHandCheck||blackCardDeckCheck;
     }
 
+
     //Check Deck Size
-}
+
+    private void firstCard(){
+        Card card;
+
+        while(true){
+        card = deck.draw ();
+        if (card.CARD_VALUE < 10){
+            playedCard = card;
+            deck.removeFromDrawDeck ( card );
+            break;
+        }
+        }
+    }
+
+    private void playCard(Card card,Hand hand){
+        deck.addToDiscardDeck ( playedCard );
+        playedCard = card;
+        hand.removeCard ( card );
+
+    }
+
+    private void draw(Hand hand){
+      Card card = deck.draw ();
+      hand.addCard ( card );
+      deck.removeFromDrawDeck ( card );
+
+    }
+
+    private void actionCards(Card card, Hand hand){
+       int cardValue = card.CARD_VALUE;
+        switch (cardValue){
+            case 10 ->{
+                //Skip
+               draw ( hand,0 );
+            }
+            case 11 ->{
+                //Reverse
+
+            }
+            case 12 ->{
+                //+2
+                draw ( hand,1 );
+            }
+            case 13 ->{
+                //wild
+            }
+            case 14 ->{
+                //+4
+                draw ( hand,2 );
+            }
+        }
+    }
+    private void draw(Hand hand , int num){
+
+
+        switch (num){
+            case 0 -> System.out.println ("You've Been Skipped");
+            case 1 -> {
+                for (int i = 0; i < 2; i++) {
+                    Card card = deck.draw ();
+                    hand.addCard ( card );
+                    deck.removeFromDrawDeck ( card );
+                }
+            }
+            case 2 -> {
+                for (int i = 0; i < 4; i++) {
+                    Card card = deck.draw ();
+                    hand.addCard ( card );
+                    deck.removeFromDrawDeck ( card );
+                }
+            }
+        }
+
+    }
+
+    public void deckTesting(){
+        for (int i = 0; i < 109; i++) {
+            Card card = deck.draw ();
+            deck.addToDiscardDeck ( card );
+            deck.removeFromDrawDeck ( card );
+            String dash = "---";
+            System.out.println (dash.repeat ( 10 ));
+            deck.displayDeck ( 1 );
+            deck.displayDeck ( 2 );
+            System.out.println (dash.repeat ( 10 ));
+        }
+    }
+
+    }
+

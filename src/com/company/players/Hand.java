@@ -32,8 +32,8 @@ public class Hand {
         return card;
    }
 
-   public void removeCard(int index){
-        cards.remove ( index );
+   public void removeCard(Card card){
+        cards.remove (card);
    }
 
 
