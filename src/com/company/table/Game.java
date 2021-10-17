@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class Game {
 
+    //Having a 3rd hidden option from players that is based off of switches and a boolean and
+    //Potentially have another int to use for the switch based off of the boolean check
     private ArrayList<Hand> hands = new ArrayList<> ();
     private Standard_Deck deck = new Standard_Deck ();
     private int intialCardCount = 7;
@@ -75,6 +77,10 @@ public class Game {
         int action = Console_output.getAction ();
         switch (action){
             case 1 -> {
+                //Figure out how to consolidate this into multiple  functions
+                //Add in an action card check and trigger
+                //Based off of whether they're affecting or being affected
+                //Add in wild card based off of the black color.
 
                 while(true) {
 
