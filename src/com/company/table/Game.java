@@ -17,9 +17,12 @@ public class Game {
     //TODO-__- Reverse Action Card
     //TODO-__-Figure where yo clear cardColor
     //TODO-__- UI Color Change Output
+    //New Branch here
     //TODO-__- Fix Beginning infinite loop
     //TODO-__- Clean Up and Refactor code based off of SOLID & OOP
+    //New Branch Here
     //TODO-__- Minecraft hunger mechanic with death game implementation
+    //New Branch here
     //TODO-__- Implement Stackabilty of cards
     //TODO-__- Graphics interface
     //TODO-__- Server based with multiple hands that can't be seen
