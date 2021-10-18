@@ -29,7 +29,10 @@ public abstract class Console_output {
     public static int getAction(){
         return  Console_input.getInt ("Please Choose One: \n1. Play Card \n2. Draw Card",1,2,"PLease Enter A Number Between 1-2"  );
     }
-
+                                                                //"🟥", "🟦", "🟩", "🟨", "⬛️"
+    public static int getColor(){
+        return Console_input.getInt ( "Please Choose A Color: \n1. \uD83D\uDFE5 \n2. \uD83D\uDFE6 \n3. \uD83D\uDFE9 \n4. \uD83D\uDFE8", 1,4,"Please Enter A Number 1-4" );
+    }
     public static int getPlayCard(Hand activehand){
         int handSize = activehand.getHandSize ();
         return Console_input.getInt ( "Please Enter A Card Number: ", 0,handSize,"Please Enter A Number 1-" + handSize  );
