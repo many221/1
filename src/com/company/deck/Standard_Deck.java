@@ -96,7 +96,7 @@ public class Standard_Deck implements Deck{
     @Override
     public Card draw() {
         deckCheck ();
-        Card card = drawDeck.get ( drawDeck.size () - 1 );
+        Card card = drawDeck.get ( 0 );
         return card;
     }
 

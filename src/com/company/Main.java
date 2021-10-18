@@ -32,6 +32,7 @@ public class Main {
 //        deck.displayDeck ( 2 );
     Game game = new Game ();
     game.start ();
+//        game.drawTesting ();
 
     }
 }

@@ -58,7 +58,6 @@ public class Game {
         dealCards ();
         while (true){
             turns ();
-            emptyHandCheck ();
             System.out.println ("-".repeat ( 20 ));
             System.out.println ("-".repeat ( 20 ));
             deck.displayDeck ( 1 );
@@ -83,6 +82,7 @@ public class Game {
         for (Hand hand : hands) {
             System.out.println ("-".repeat ( 20 ));
             turnActions ( hand );
+            emptyHandCheck ( hand );
             System.out.println ("-".repeat ( 20 ));
         }
 
@@ -99,11 +99,14 @@ public class Game {
             }
 //            case 2 ->{Reverse}
             case 3 ->{
-                draw ( activeHand );
-                draw ( activeHand );
+                draw ( activeHand,2 );
+                actionReset ();
             }
 //            case 4 ->{Wild}
-//            case 5 ->{+4}
+            case 5 ->{
+                draw ( activeHand,4 );
+                actionReset ();
+            }
             default -> {
             System.out.println ( activeHand.getPlayerName () + "'s Turn" );
             System.out.print ( "Cards in Hand: " + activeHand.getHandSize () + " :" );
@@ -132,6 +135,7 @@ public class Game {
 
                         check = cardCheck ( choosenCard, activeHand );
                         if(check){
+                            //Color changing action
                             if(choosenCard.CARD_COLOR == "⬛️"){
                                cardColor = colorCheck ( Console_output.getColor () );
                                 System.out.println ("The Color is " + cardColor + ". ");
@@ -158,15 +162,12 @@ public class Game {
     }
 
 
-    private void emptyHandCheck(){
-        for (Hand hand: hands) {
-            if(hand.isEmpty ()){
-                winner = hand;
-                System.out.println (winner.getPlayerName () + " Has Won");
-                System.exit ( 0 );
-            }
+    private void emptyHandCheck(Hand hand){
+        if(hand.isEmpty ()){
+            winner = hand;
+            System.out.println (winner.getPlayerName () + " Has Won");
+            System.exit ( 0 );
         }
-
     }
 
     private boolean isPlayableCheck(Card attemptCard){
@@ -271,6 +272,25 @@ public class Game {
 
     }
 
+    private void draw(Hand hand, int num){
+       ArrayList<Card> drawn = drawMutliple ( num );
+        for (Card card:
+             drawn) {
+            hand.addCard ( card );
+        }
+    }
+
+    private ArrayList<Card> drawMutliple(int num){
+        ArrayList<Card> Drawn =  new ArrayList<Card>();
+        for (int i = 0; i < num; i++) {
+            Card card = deck.draw ();
+            Drawn.add ( card );
+            deck.removeFromDrawDeck ( card );
+        }
+//        String output = Drawn.toString ();
+//        System.out.println (output);
+        return Drawn;
+    }
 
     public void deckTesting(){
         for (int i = 0; i < 109; i++) {
@@ -283,6 +303,11 @@ public class Game {
             deck.displayDeck ( 2 );
             System.out.println (dash.repeat ( 10 ));
         }
+    }
+
+    public void drawTesting(){
+        deck.shuffle ();
+        drawMutliple ( 4 );
     }
 
     }
