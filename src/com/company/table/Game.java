@@ -110,7 +110,7 @@ public class Game {
                         }
                         System.out.println ("Check 2");
                         i--;
-                        Hand hand = hands.get ( i );2
+                        Hand hand = hands.get ( i );
                         System.out.println ("Check 3");
                         System.out.println ("-".repeat ( 20 ));
                         turnActions ( hand );
