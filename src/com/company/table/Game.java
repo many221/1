@@ -33,6 +33,7 @@ public class Game {
     private Standard_Deck deck = new Standard_Deck ();
     private int intialCardCount = 7;
     private int specialAction;
+    private int direction;
     private String cardColor = "";
     private Hand winner;
     private Card playedCard;
@@ -55,7 +56,11 @@ public class Game {
 
     public void start(){
         deck.shuffle ();
+        System.out.println ("Shuffled");
+        firstCard ();
+        System.out.println ("First Card Dealt");
         dealCards ();
+        System.out.println ("Player Cards Dealt");
         while (true){
             turns ();
             System.out.println ("-".repeat ( 20 ));
@@ -70,57 +75,53 @@ public class Game {
     }
 
     private void dealCards(){
+
         Console_output.dealingMsg ( intialCardCount );
         for (Hand hand : hands) {
             deck.deal ( hand, intialCardCount );
         }
-        firstCard ();
+
        // System.out.println (deck.showPlayedCard ());
     }
 
     private void turns(){
+
         while(true){
-
-        int direction = 0;
-
-            if(specialAction == 2){
-                System.out.println ("Switch hit 1: False: " + direction );
-                if(direction == 0 ){
-                    System.out.println ("Switch hit 2:True: " + direction);
-                    direction = 1;
-                }else{
-                    System.out.println ("Switch hit 3:False:" + direction );
-                    direction = 0;
-                }
-
-                actionReset ();
-            }
 
             for (int i = 0; i < hands.size (); ) {
 
-                Hand hand = hands.get ( i );
+
 
                 switch (direction) {
-                    case 2 -> {
+                    case 0 -> {
+                        Hand hand = hands.get ( i );
                         System.out.println ("-".repeat ( 20 ));
                         turnActions ( hand );
                         emptyHandCheck ( hand);
                         System.out.println ("-".repeat ( 20 ));
                         i++;
+                        System.out.println ("Check 0");
                     }
 
                     case 1 -> {
+                        System.out.println ("Check 1");
                         if(i == 0){
                             i = hands.size ();
                         }
+                        System.out.println ("Check 2");
+                        i--;
+                        Hand hand = hands.get ( i );2
+                        System.out.println ("Check 3");
                         System.out.println ("-".repeat ( 20 ));
                         turnActions ( hand );
                         emptyHandCheck ( hand);
                         System.out.println ("-".repeat ( 20 ));
-                        i--;
+
+                        System.out.println ("Check 4");
                     }
                 }
             }
+
         }
     }
 
@@ -129,16 +130,17 @@ public class Game {
         playDeck ();
 
         switch (specialAction) {
+            //Skipped
             case 1 ->{
                 System.out.println (activeHand.getPlayerName () +", You've Been Skipped!");
                 actionReset ();
             }
-//            case 2 ->{Reverse}
+            //{Draw 2}
             case 3 ->{
                 draw ( activeHand,2 );
                 actionReset ();
             }
-//            case 4 ->{Wild}
+            //{Draw 4}
             case 5 ->{
                 draw ( activeHand,4 );
                 actionReset ();
@@ -217,6 +219,7 @@ public class Game {
 
     }
 
+    //SpecialActions Are In Here
     private boolean cardCheck(Card attempedCard, Hand activeHand ){
 
      boolean isPlayable = isPlayableCheck ( attempedCard );
@@ -235,6 +238,9 @@ public class Game {
              case 11 ->{
                  //Reverse
                  specialAction = 2;
+                 if(direction == 0){
+                     direction = 1;
+                 }else {direction = 0;}
                  playCard ( attempedCard, activeHand );
              }
              case 12 ->{
@@ -288,14 +294,16 @@ public class Game {
         Card card;
 
         while(true){
-        card = deck.draw ();
-        if (card.CARD_VALUE < 10){
+            card = deck.draw ();
+
+            if (card.CARD_VALUE < 10){
             playedCard = card;
             deck.removeFromDrawDeck ( card );
             break;
         }
         }
     }
+
 
     private void playCard(Card card,Hand hand){
         deck.addToDiscardDeck ( playedCard );
