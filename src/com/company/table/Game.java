@@ -7,20 +7,20 @@ import com.company.deck.Standard_Deck;
 import com.company.players.Hand;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class Game {
 
-    //Having a 3rd hidden option from players that is based off of switches and a boolean and
-    //Potentially have another int to use for the switch based off of the boolean check
 
-    //TODO-__- Fix multiple Card Drawing
+
     //TODO-__- Reverse Action Card
-    //TODO-__-Figure where yo clear cardColor
-    //TODO-__- UI Color Change Output
+    //TODO-__-Figure where yo clear cardColor + UI Color Change Output
     //New Branch here
     //TODO-__- Fix Beginning infinite loop
     //TODO-__- Clean Up and Refactor code based off of SOLID & OOP
     //New Branch Here
+    //TODO-__- Rage Quit
     //TODO-__- Minecraft hunger mechanic with death game implementation
     //New Branch here
     //TODO-__- Implement Stackabilty of cards
@@ -79,13 +79,49 @@ public class Game {
     }
 
     private void turns(){
-        for (Hand hand : hands) {
-            System.out.println ("-".repeat ( 20 ));
-            turnActions ( hand );
-            emptyHandCheck ( hand );
-            System.out.println ("-".repeat ( 20 ));
-        }
+        while(true){
 
+        int direction = 0;
+
+            if(specialAction == 2){
+                System.out.println ("Switch hit 1: False: " + direction );
+                if(direction == 0 ){
+                    System.out.println ("Switch hit 2:True: " + direction);
+                    direction = 1;
+                }else{
+                    System.out.println ("Switch hit 3:False:" + direction );
+                    direction = 0;
+                }
+
+                actionReset ();
+            }
+
+            for (int i = 0; i < hands.size (); ) {
+
+                Hand hand = hands.get ( i );
+
+                switch (direction) {
+                    case 2 -> {
+                        System.out.println ("-".repeat ( 20 ));
+                        turnActions ( hand );
+                        emptyHandCheck ( hand);
+                        System.out.println ("-".repeat ( 20 ));
+                        i++;
+                    }
+
+                    case 1 -> {
+                        if(i == 0){
+                            i = hands.size ();
+                        }
+                        System.out.println ("-".repeat ( 20 ));
+                        turnActions ( hand );
+                        emptyHandCheck ( hand);
+                        System.out.println ("-".repeat ( 20 ));
+                        i--;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -108,16 +144,14 @@ public class Game {
                 actionReset ();
             }
             default -> {
+
             System.out.println ( activeHand.getPlayerName () + "'s Turn" );
             System.out.print ( "Cards in Hand: " + activeHand.getHandSize () + " :" );
             activeHand.showCards ();
             int action = Console_output.getAction ();
+
             switch (action) {
                 case 1 -> {
-                    //Figure out how to consolidate this into multiple  functions
-                    //Add in an action card check and trigger
-                    //Based off of whether they're affecting or being affected
-                    //Add in wild card based off of the black color.
 
                     boolean check = false;
                     do {
@@ -151,7 +185,7 @@ public class Game {
                     } while (!check);
                 }
                 //O}---Play after draw
-                case 2 -> draw ( activeHand );
+                case 2 -> {draw ( activeHand );}
             }
         }
         }
@@ -160,6 +194,7 @@ public class Game {
     private void playDeck(){
         System.out.println ("Played Card: {"+ playedCard + "}");
     }
+
 
 
     private void emptyHandCheck(Hand hand){
@@ -193,22 +228,27 @@ public class Game {
          switch (value){
 
              case 10 ->{
+                 //Skip
                  specialAction = 1;
                  playCard ( attempedCard, activeHand );
              }
              case 11 ->{
+                 //Reverse
                  specialAction = 2;
                  playCard ( attempedCard, activeHand );
              }
              case 12 ->{
+                 //+2
                  specialAction = 3;
                  playCard ( attempedCard, activeHand );
              }
              case 13 ->{
+                 //Wild
                  specialAction = 4;
                  playCard ( attempedCard, activeHand );
              }
              case 14 ->{
+                 //+4
                  specialAction = 5;
                  playCard ( attempedCard, activeHand );
              }

@@ -112,7 +112,7 @@ public class Standard_Deck implements Deck{
 
     public void deckCheck(){
         if(deckSize ( 1 ) == 1){
-            //Collections.copy ( drawDeck,discardDeck );
+
          drawDeck.addAll ( discardDeck);
          discardDeck.clear ();
          shuffle ();
