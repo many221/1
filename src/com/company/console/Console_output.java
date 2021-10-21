@@ -6,8 +6,8 @@ public abstract class Console_output {
 
     public static boolean welcome_msg(){
         boolean check;
-        System.out.println ("Hello There! \nWelcome  To Manny's One Game!");
-        check = Console_input.yesNO (Console_input.getString ("Would You Like To Play?\nYy:Nn", true) );
+        System.out.println ("Hello There! \nWelcome  To Manny's One Game!\nWould You Like To Play?\nYy:Nn");
+        check = Console_input.yesNO ();
         return check;
     }
 

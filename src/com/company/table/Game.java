@@ -1,34 +1,23 @@
 package com.company.table;
-
-
 import com.company.cards.Card;
 import com.company.console.Console_output;
 import com.company.deck.Standard_Deck;
 import com.company.players.Hand;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 public class Game {
 
-
-
-    //TODO-__-Figure where yo clear cardColor + UI Color Change Output
     //New Branch here
     //TODO-__- Actor Classes
     //New Branch here
-    //TODO-__- Fix Beginning infinite loop
     //TODO-__- Clean Up and Refactor code based off of SOLID & OOP
     //New Branch Here
-    //TODO-__- Rage Quit
-    //TODO-__- Minecraft hunger mechanic with death game implementation
-    //New Branch here
     //TODO-__- Implement Stackabilty of cards
+    //TODO-__- Rage Quit
+    //New Branch here
+    //TODO-__- Minecraft hunger mechanic with death game implementation
     //TODO-__- Graphics interface
     //TODO-__- Server based with multiple hands that can't be seen
-
-    //O}_-_- FINISH BY SUNDAY!!!!!!
 
     private ArrayList<Hand> hands = new ArrayList<> ();
     private Standard_Deck deck = new Standard_Deck ();
@@ -42,7 +31,8 @@ public class Game {
     public Game(){
 
         //TODO: Fix infinte yes no loop;
-       if ( Console_output.welcome_msg ()) {
+        boolean start =  Console_output.welcome_msg ();
+       if ( start) {
            int playing = Console_output.playing ();
            for (int i = 0; i < playing; i++) {
                Hand hand = new Hand ( Console_output.playerNames () );
@@ -126,10 +116,8 @@ public class Game {
         }
     }
 
-
     private void turnActions(Hand activeHand){
         playDeck ();
-
         switch (specialAction) {
             //Skipped
             case 1 ->{
@@ -180,7 +168,9 @@ public class Game {
                             }
                             break;
                         }
-                        if(playedCard.CARD_COLOR.equals ( "⬛️" )) System.out.print ("The Color is " + cardColor + ". ");
+                        if(playedCard.CARD_COLOR.equals ( "⬛️" )) {
+                            System.out.print ("The Color is " + cardColor + ". ");
+                        }
                         System.out.println ( "Played Card: " + playedCard );
                         System.out.println ();
                         System.out.print ( "Please Choose A Valid Card Or Enter 0 to go back" );
@@ -196,10 +186,11 @@ public class Game {
     }
 
     private void playDeck(){
+        if(playedCard.CARD_COLOR.equals ( "⬛️" )) {
+            System.out.print ("The Color is " + cardColor + ". ");
+        }
         System.out.println ("Played Card: {"+ playedCard + "}");
     }
-
-
 
     private void emptyHandCheck(Hand hand){
         if(hand.isEmpty ()){
@@ -306,7 +297,6 @@ public class Game {
         }
     }
 
-
     private void playCard(Card card,Hand hand){
         deck.addToDiscardDeck ( playedCard );
         playedCard = card;
@@ -314,7 +304,6 @@ public class Game {
 
     }
 
-    //TODO Figure out looping issue
     private void draw(Hand hand){
       Card card = deck.draw ();
       hand.addCard ( card );

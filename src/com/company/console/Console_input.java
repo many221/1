@@ -1,6 +1,4 @@
 package com.company.console;
-
-import java.lang.reflect.Method;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -14,6 +12,7 @@ public  abstract class Console_input {
         do {
             System.out.println(prompt);
             String input = scanner.nextLine();
+
             try{
                 option = Integer.parseInt(input);
             } catch (NumberFormatException err) {
@@ -36,23 +35,15 @@ public  abstract class Console_input {
         } while (true);
         return input;
     }
-    //O}----fix loop
-    protected static boolean yesNO(String yn){
+
+    protected static boolean yesNO(){
 
         while(true) {
+          String  yn = scanner.next ();
            switch (yn) {
-               case "Y", "y", "Yes", "yes" -> {
-               return true;
-
-               }
-               case "N", "n", "No", "no" -> {
-              return false;
-               }
-               default -> {
-                   out.println ( "Please Enter Yes or No" );
-
-                   continue;
-               }
+               case "Y", "y", "Yes", "yes" -> {return true;}
+               case "N", "n", "No", "no" -> {return false;}
+               default -> {out.println ( "Please Enter Yes or No" );}
            }
        }
     }
