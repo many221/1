@@ -14,8 +14,9 @@ public class Game {
 
 
 
-    //TODO-__- Reverse Action Card
     //TODO-__-Figure where yo clear cardColor + UI Color Change Output
+    //New Branch here
+    //TODO-__- Actor Classes
     //New Branch here
     //TODO-__- Fix Beginning infinite loop
     //TODO-__- Clean Up and Refactor code based off of SOLID & OOP
@@ -137,11 +138,13 @@ public class Game {
             }
             //{Draw 2}
             case 3 ->{
+                System.out.println (activeHand.getPlayerName () +", You've Been Skipped And Have Drawn 2!");
                 draw ( activeHand,2 );
                 actionReset ();
             }
             //{Draw 4}
             case 5 ->{
+                System.out.println (activeHand.getPlayerName () +", You've Been Skipped And Have Drawn 4!");
                 draw ( activeHand,4 );
                 actionReset ();
             }
@@ -172,24 +175,23 @@ public class Game {
                         check = cardCheck ( choosenCard, activeHand );
                         if(check){
                             //Color changing action
-                            if(choosenCard.CARD_COLOR == "⬛️"){
+                            if(choosenCard.CARD_COLOR.equals ( "⬛️" )){
                                cardColor = colorCheck ( Console_output.getColor () );
-                                System.out.println ("The Color is " + cardColor + ". ");
                             }
                             break;
                         }
-                        System.out.print ( "Played Card: " + playedCard );
+                        if(playedCard.CARD_COLOR.equals ( "⬛️" )) System.out.print ("The Color is " + cardColor + ". ");
+                        System.out.println ( "Played Card: " + playedCard );
                         System.out.println ();
                         System.out.print ( "Please Choose A Valid Card Or Enter 0 to go back" );
                         activeHand.showCards ();
 
-
                     } while (!check);
                 }
-                //O}---Play after draw
+
                 case 2 -> {draw ( activeHand );}
             }
-        }
+         }
         }
     }
 
