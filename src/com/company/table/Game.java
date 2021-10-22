@@ -47,21 +47,18 @@ public class Game {
 
     public void start(){
         deck.shuffle ();
+        System.out.println ("-".repeat ( 20 ));
         System.out.println ("Shuffled");
+        System.out.println ("-".repeat ( 20 ));
         firstCard ();
         System.out.println ("First Card Dealt");
+        System.out.println ("-".repeat ( 20 ));
         dealCards ();
         System.out.println ("Player Cards Dealt");
+        System.out.println ("-".repeat ( 20 ));
         while (true){
             turns ();
-            System.out.println ("-".repeat ( 20 ));
-            System.out.println ("-".repeat ( 20 ));
-            deck.displayDeck ( 1 );
-            deck.displayDeck ( 2 );
-            System.out.println ("-".repeat ( 20 ));
-            System.out.println ("-".repeat ( 20 ));
         }
-
 
     }
 
@@ -81,34 +78,35 @@ public class Game {
 
             for (int i = 0; i < hands.size (); ) {
 
-
-
                 switch (direction) {
                     case 0 -> {
+                        if(specialAction == 2){
+                            i++;
+                        }
                         Hand hand = hands.get ( i );
                         System.out.println ("-".repeat ( 20 ));
                         turnActions ( hand );
                         emptyHandCheck ( hand);
                         System.out.println ("-".repeat ( 20 ));
                         i++;
-                        System.out.println ("Check 0");
+
                     }
 
                     case 1 -> {
-                        System.out.println ("Check 1");
                         if(i == 0){
                             i = hands.size ();
                         }
-                        System.out.println ("Check 2");
+                        if(specialAction == 2){
+                            i--;
+                        }
                         i--;
                         Hand hand = hands.get ( i );
-                        System.out.println ("Check 3");
                         System.out.println ("-".repeat ( 20 ));
                         turnActions ( hand );
+                        System.out.println ("-".repeat ( 20 ));
                         emptyHandCheck ( hand);
                         System.out.println ("-".repeat ( 20 ));
 
-                        System.out.println ("Check 4");
                     }
                 }
             }
@@ -118,6 +116,7 @@ public class Game {
 
     private void turnActions(Hand activeHand){
         playDeck ();
+        System.out.println ("-".repeat ( 20 ));
         switch (specialAction) {
             //Skipped
             case 1 ->{
@@ -137,53 +136,122 @@ public class Game {
                 actionReset ();
             }
             default -> {
+                boolean resart = true;
+            do {
+                System.out.println ( activeHand.getPlayerName () + "'s Turn" );
+                System.out.print ( "Cards in Hand: " + activeHand.getHandSize () + " :" );
+                activeHand.showCards ();
+                int action = Console_output.getAction ();
+                switch (action) {
+                    case 1 -> {
 
-            System.out.println ( activeHand.getPlayerName () + "'s Turn" );
-            System.out.print ( "Cards in Hand: " + activeHand.getHandSize () + " :" );
-            activeHand.showCards ();
-            int action = Console_output.getAction ();
-
-            switch (action) {
-                case 1 -> {
-
-                    boolean check = false;
-                    do {
-
-                        int card = Console_output.getPlayCard ( activeHand );
-
-                        if (card == 0) {
-                            turnActions ( activeHand );
-                            check = true;
-                        }
-
-                        int indexOfCard = card - 1;
-
-                        Card choosenCard = activeHand.playCard ( indexOfCard );
-
-                        check = cardCheck ( choosenCard, activeHand );
-                        if(check){
-                            //Color changing action
-                            if(choosenCard.CARD_COLOR.equals ( "⬛️" )){
-                               cardColor = colorCheck ( Console_output.getColor () );
+                        do {
+                            int card = Console_output.getPlayCard ( activeHand );
+                            //X> Recursion Issues with index out of bounds
+                            if (card == 0) {
+                              draw ( activeHand );
+                              break;
                             }
-                            break;
-                        }
-                        if(playedCard.CARD_COLOR.equals ( "⬛️" )) {
-                            System.out.print ("The Color is " + cardColor + ". ");
+
+                            Card choosenCard = activeHand.playCard (card - 1);
+
+                            boolean check = cardCheck ( choosenCard, activeHand );
+                            if (check) {
+                                //Color changing action
+                                if (choosenCard.CARD_COLOR.equals ( "⬛️" )) {
+                                    cardColor = colorCheck ( Console_output.getColor () );
+                                }
+                                break;
+                            } else {System.out.print ( "Please Choose A Valid Card Or Enter 0 to go back" );}
+
+                        } while (true);
+                        if (playedCard.CARD_COLOR.equals ( "⬛️" )) {
+                            System.out.print ( "The Color is " + cardColor + ". " );
                         }
                         System.out.println ( "Played Card: " + playedCard );
                         System.out.println ();
-                        System.out.print ( "Please Choose A Valid Card Or Enter 0 to go back" );
+
                         activeHand.showCards ();
-
-                    } while (!check);
+                        resart = false;
+                    }
+                    case 2 -> {
+                        draw ( activeHand );
+                        resart = false;
+                    }
                 }
-
-                case 2 -> {draw ( activeHand );}
-            }
+            }while (resart);
          }
         }
     }
+    private void turnActions(Hand activeHand, int act){
+        playDeck ();
+        switch (act) {
+            //Skipped
+            case 1 ->{
+//                System.out.println (activeHand.getPlayerName () +", You've Been Skipped!");
+//                actionReset ();
+            }
+            //{Draw 2}
+            case 3 ->{
+//                System.out.println (activeHand.getPlayerName () +", You've Been Skipped And Have Drawn 2!");
+                draw ( activeHand,2 );
+//                actionReset ();
+            }
+            //{Draw 4}
+            case 5 ->{
+//                System.out.println (activeHand.getPlayerName () +", You've Been Skipped And Have Drawn 4!");
+                draw ( activeHand,4 );
+//                actionReset ();
+            }
+            default -> {
+
+                System.out.println ( activeHand.getPlayerName () + "'s Turn" );
+                System.out.print ( "Cards in Hand: " + activeHand.getHandSize () + " :" );
+                activeHand.showCards ();
+                int action = Console_output.getAction ();
+
+                switch (action) {
+                    case 1 -> {
+
+                        boolean check = false;
+                        do {
+
+                            int card = Console_output.getPlayCard ( activeHand );
+
+                            if (card == 0) {
+                                turnActions ( activeHand );
+                                check = true;
+                            }
+
+                            int indexOfCard = card - 1;
+
+                            Card choosenCard = activeHand.playCard ( indexOfCard );
+
+                            check = cardCheck ( choosenCard, activeHand );
+                            if(check){
+                                //Color changing action
+                                if(choosenCard.CARD_COLOR.equals ( "⬛️" )){
+                                    cardColor = colorCheck ( Console_output.getColor () );
+                                }
+                                break;
+                            }
+                            if(playedCard.CARD_COLOR.equals ( "⬛️" )) {
+                                System.out.print ("The Color is " + cardColor + ". ");
+                            }
+                            System.out.println ( "Played Card: " + playedCard );
+                            System.out.println ();
+                            System.out.print ( "Please Choose A Valid Card Or Enter 0 to go back" );
+                            activeHand.showCards ();
+
+                        } while (!check);
+                    }
+
+                    case 2 -> {draw ( activeHand );}
+                }
+            }
+        }
+    }
+
 
     private void playDeck(){
         if(playedCard.CARD_COLOR.equals ( "⬛️" )) {
@@ -197,6 +265,9 @@ public class Game {
             winner = hand;
             System.out.println (winner.getPlayerName () + " Has Won");
             System.exit ( 0 );
+        }
+        if(hand.getHandSize () == 1){
+            System.out.println (hand.getPlayerName () + " Has Uno! All Players Must Now Target Them Before They Win!!");
         }
     }
 
@@ -257,7 +328,6 @@ public class Game {
              }
          }
      }
-        System.out.println ("Special Action: " + specialAction);
       return isPlayable;
 
     }
@@ -286,15 +356,12 @@ public class Game {
     private void firstCard(){
         Card card;
 
-        while(true){
-            card = deck.draw ();
 
-            if (card.CARD_VALUE < 10){
+            card = deck.draw ();
             playedCard = card;
             deck.removeFromDrawDeck ( card );
-            break;
-        }
-        }
+
+
     }
 
     private void playCard(Card card,Hand hand){

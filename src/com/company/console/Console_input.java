@@ -11,7 +11,7 @@ public  abstract class Console_input {
         int option = min - 1;
         do {
             System.out.println(prompt);
-            String input = scanner.nextLine();
+            String input = scanner.next();
 
             try{
                 option = Integer.parseInt(input);
