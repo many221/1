@@ -360,6 +360,7 @@ public class Game {
             card = deck.draw ();
             playedCard = card;
             deck.removeFromDrawDeck ( card );
+            actionReset ();
 
 
     }
